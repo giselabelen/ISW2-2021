@@ -40,6 +40,8 @@ public enum ZeroAbstractValue {
       return MAYBE_ZERO; // PORQUE ES DIVISION ENTERA
     }else if (this == MAYBE_ZERO && another == NOT_ZERO){
       return MAYBE_ZERO;
+    }else if(this != BOTTOM && another == MAYBE_ZERO){// ADDED THIS ONE
+      return MAYBE_ZERO;  
     }else{
       return BOTTOM;
     }

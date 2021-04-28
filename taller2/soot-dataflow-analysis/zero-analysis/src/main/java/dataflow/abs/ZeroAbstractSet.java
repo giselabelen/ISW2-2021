@@ -6,6 +6,14 @@ import java.util.Map;
 public class ZeroAbstractSet {
 	private final HashMap<String, ZeroAbstractValue> map;
 
+	@Override
+  	public boolean equals(Object o) {
+    	if (this == o) return true;
+    	if (!(o instanceof ZeroAbstractSet)) return false;
+    	ZeroAbstractSet that = (ZeroAbstractSet) o;
+    	return map.equals(that.map);
+ 	}
+
 	public ZeroAbstractSet(){
 		this.map = new HashMap<String, ZeroAbstractValue>();
 	}
@@ -14,11 +22,14 @@ public class ZeroAbstractSet {
 		return this.map.containsKey(variable);
 	}
 
-	public ZeroAbstractValue getValue(String variable) {
+	public ZeroAbstractValue getValue(String variable) {		
 		return this.map.get(variable);
 	}
 
 	public void setValue(String variable, ZeroAbstractValue value) {
+		
+		System.out.println (variable);
+		System.out.println (value);
 		if (value != null) {
 			this.map.put(variable, value);
 		}

@@ -26,8 +26,7 @@ public class DivisionByZeroAnalysis extends ForwardFlowAnalysis<Unit, ZeroAbstra
   protected void flowThrough(ZeroAbstractSet in, Unit unit, ZeroAbstractSet out) {
     // Local all values from input
     out.clear();
-    out.putAll(in);
-
+    out.putAll(in);    
     if (unit instanceof DefinitionStmt) {
       DefinitionStmt definition = (DefinitionStmt) unit;
 
@@ -53,7 +52,9 @@ public class DivisionByZeroAnalysis extends ForwardFlowAnalysis<Unit, ZeroAbstra
 
     //copy(input1,output);
     //input2.union(output);
-    output = input1.union(input2);
+    //output = input1.union(input2);
+    output.clear();
+    output.putAll(input1.union(input2));
     //throw new UnsupportedOperationException();
   }
 
