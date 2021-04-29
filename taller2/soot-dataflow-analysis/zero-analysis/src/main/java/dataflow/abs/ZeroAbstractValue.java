@@ -17,85 +17,79 @@ public enum ZeroAbstractValue {
 
   public ZeroAbstractValue add(ZeroAbstractValue another) {
 
-    if (this == ZERO && another == ZERO){
+    if (this == ZERO && another == ZERO){ // cero + cero da cero
       return ZERO;
-    }else if (this == ZERO && another == NOT_ZERO){
+    }else if (this == ZERO && another == NOT_ZERO){ // cero + no_cero da no_cero
       return NOT_ZERO;
-    }else if (this == NOT_ZERO && another == ZERO){
+    }else if (this == NOT_ZERO && another == ZERO){ // no_cero + cero da no_cero
       return NOT_ZERO;
-    }else if (this == BOTTOM || another == BOTTOM){
+    }else if (this == BOTTOM || another == BOTTOM){ // algun sumando indef da indef
       return BOTTOM;
-    }else{
+    }else{ // los demas casos dan maybe_cero
       return MAYBE_ZERO;
     }
-    //throw new UnsupportedOperationException();
   }
   
 
   public ZeroAbstractValue divideBy(ZeroAbstractValue another) {
     
-    if (this == ZERO && another == NOT_ZERO){
+    if (this == BOTTOM || another == BOTTOM){ // algun operando undef da undef
+      return BOTTOM;
+    }else if (another == ZERO){ // divisor cero da undef (caso dividendo undef se considera arriba)
+      return BOTTOM
+    }else if (this == ZERO){ // dividendo cero da cero (caso divisor cero se considera arriba)
       return ZERO;
-    }else if (this == NOT_ZERO && another == NOT_ZERO){
-      return MAYBE_ZERO; // PORQUE ES DIVISION ENTERA
-    }else if (this == MAYBE_ZERO && another == NOT_ZERO){
-      return MAYBE_ZERO;
-    }else if(this != BOTTOM && another == MAYBE_ZERO){// ADDED THIS ONE
-      return MAYBE_ZERO;  
-    }else{
+    }else{ // los demas casos dan maybe_cero (combinaciones de MZ y NZ)
       return BOTTOM;
     }
-    //throw new UnsupportedOperationException();
   }
   
 
   public ZeroAbstractValue multiplyBy(ZeroAbstractValue another) {
     
-    if (this == BOTTOM || another == BOTTOM){
+    if (this == BOTTOM || another == BOTTOM){ // algun factor undef da undef
       return BOTTOM;
-    }else if (this == ZERO || another == ZERO){
+    }else if (this == ZERO || another == ZERO){ // algun factor cero da cero
       return ZERO;
-    }else if(this == NOT_ZERO && another == NOT_ZERO){
+    }else if(this == NOT_ZERO && another == NOT_ZERO){ // ambos factores no_cero da no_cero
       return NOT_ZERO;
-    }else{
+    }else{ // los demas casos dan maybe_cero
       return MAYBE_ZERO;
     }
-    //throw new UnsupportedOperationException();
   }
   
 
   public ZeroAbstractValue substract(ZeroAbstractValue another) {
     
-    if (this == ZERO && another == ZERO){
+    if (this == ZERO && another == ZERO){ // cero - cero da cero
       return ZERO;
-    }else if (this == ZERO && another == NOT_ZERO){
+    }else if (this == ZERO && another == NOT_ZERO){ // cero - no_cero da no_cero
       return NOT_ZERO;
-    }else if (this == NOT_ZERO && another == ZERO){
+    }else if (this == NOT_ZERO && another == ZERO){ // no_cero - cero da no_cero
       return NOT_ZERO;
-    }else if (this == BOTTOM || another == BOTTOM){
+    }else if (this == BOTTOM || another == BOTTOM){ // algun operando indef da indef
       return BOTTOM;
-    }else{
+    }else{ // los demas casos dan maybe_cero
       return MAYBE_ZERO;
     }
-    //throw new UnsupportedOperationException();
   }
   
 
   public ZeroAbstractValue merge(ZeroAbstractValue another) {
-    // mergea valores, ej: uno es notzero y el otro es zero, da maybezero
+    // operacion de merge de tuplas con la misma variable
     if (this == another){
       return another;
-    }else if (this == ZERO && another == NOT_ZERO){
+    }else if (this == ZERO && another == NOT_ZERO){ // tuplas cero y no_cero da maybe_cero
       return MAYBE_ZERO;
-    }else if (this == NOT_ZERO && another == ZERO){
+    }else if (this == NOT_ZERO && another == ZERO){ // tuplas no_cero y cero da maybe_cero
       return MAYBE_ZERO;
-    }else if (this == MAYBE_ZERO && another != BOTTOM){
+    }else if (this == MAYBE_ZERO && another != BOTTOM){ // tupla maybe_cero con otra cosa da maybe_cero
       return MAYBE_ZERO;
-    }else if (this != BOTTOM && another == MAYBE_ZERO){
+    }else if (this != BOTTOM && another == MAYBE_ZERO){ // tupla maybe_cero con otra cosa da maybe_cero
       return MAYBE_ZERO;
     }else if (this != BOTTOM && another == BOTTOM){ // FALTA VER QUE PASA CON BOTTOM
       return this;
-    }else if((this == BOTTOM && another != BOTTOM)){
+    }else if (this == BOTTOM && another != BOTTOM){
       return another;
     }else{
       return BOTTOM;

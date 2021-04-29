@@ -50,12 +50,9 @@ public class DivisionByZeroAnalysis extends ForwardFlowAnalysis<Unit, ZeroAbstra
 
   protected void merge(ZeroAbstractSet input1, ZeroAbstractSet input2, ZeroAbstractSet output) {
 
-    //copy(input1,output);
-    //input2.union(output);
-    //output = input1.union(input2);
+    // limpiamos output y colocamos la union de input1 e input2
     output.clear();
     output.putAll(input1.union(input2));
-    //throw new UnsupportedOperationException();
   }
 
   protected void copy(ZeroAbstractSet source, ZeroAbstractSet dest) {

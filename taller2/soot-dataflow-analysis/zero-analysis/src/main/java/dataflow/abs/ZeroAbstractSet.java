@@ -35,32 +35,21 @@ public class ZeroAbstractSet {
 		}
 	}
 
-	public ZeroAbstractSet union(ZeroAbstractSet another) {
-		
-		// for (Map.Entry me : another.entrySet()) {	// itero cada elemento en another
-		// 	if (this.hasValue(me.getKey())){ // si esta clave esta en mi map
-		// 		mergeValue = this.getValue(me.getKey()).merge(me.getValue());
-		// 		this.setValue(me.getKey(),mergeValue);
-		// 	}else{	// si no esta, la agrego
-		// 		this.setValue(me.getKey(),me.getValue());
-		// 	}
-  //       }		
+	public ZeroAbstractSet union(ZeroAbstractSet another) {		
 
 		ZeroAbstractSet output = new ZeroAbstractSet();
 		ZeroAbstractValue mergeValue;
 
-		output.putAll(another);
-        for (String currentKey : this.map.keySet()) {	// itero cada clave en mi map
-        	//currentKey = me.getKey();
+		output.putAll(another); // copio el contenido de another
+        for (String currentKey : this.map.keySet()) { // itero cada clave en mi map
 
-			if (output.hasValue(currentKey)){ // si esta clave esta en output
+			if (output.hasValue(currentKey)){ // si la clave esta en output, mergeo
 				mergeValue = output.getValue(currentKey).merge(this.getValue(currentKey));
 				output.setValue(currentKey,mergeValue);
 			}else{	// si no esta, la agrego
 				output.setValue(currentKey,this.getValue(currentKey));
 			}
         }
-		//throw new UnsupportedOperationException();
 		return output;
 	}
 
