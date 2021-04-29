@@ -36,7 +36,7 @@ public enum ZeroAbstractValue {
     if (this == BOTTOM || another == BOTTOM){ // algun operando undef da undef
       return BOTTOM;
     }else if (another == ZERO){ // divisor cero da undef (caso dividendo undef se considera arriba)
-      return BOTTOM
+      return BOTTOM;
     }else if (this == ZERO){ // dividendo cero da cero (caso divisor cero se considera arriba)
       return ZERO;
     }else{ // los demas casos dan maybe_cero (combinaciones de MZ y NZ)
@@ -87,15 +87,13 @@ public enum ZeroAbstractValue {
       return MAYBE_ZERO;
     }else if (this != BOTTOM && another == MAYBE_ZERO){ // tupla maybe_cero con otra cosa da maybe_cero
       return MAYBE_ZERO;
-    }else if (this != BOTTOM && another == BOTTOM){ // FALTA VER QUE PASA CON BOTTOM
+    }else if (this != BOTTOM && another == BOTTOM){ // tupla indef con otra no indef da lo que tiene la no indef
       return this;
-    }else if (this == BOTTOM && another != BOTTOM){
+    }else if (this == BOTTOM && another != BOTTOM){ // tupla indef con otra no indef da lo que tiene la no indef
       return another;
     }else{
       return BOTTOM;
     }
-    
-    //throw new UnsupportedOperationException();
   }
   
 }
