@@ -93,7 +93,11 @@ public enum ZeroAbstractValue {
       return MAYBE_ZERO;
     }else if (this != BOTTOM && another == MAYBE_ZERO){
       return MAYBE_ZERO;
-    }else{ // FALTA VER QUE PASA CON BOTTOM
+    }else if (this != BOTTOM && another == BOTTOM){ // FALTA VER QUE PASA CON BOTTOM
+      return this;
+    }else if((this == BOTTOM && another != BOTTOM)){
+      return another;
+    }else{
       return BOTTOM;
     }
     

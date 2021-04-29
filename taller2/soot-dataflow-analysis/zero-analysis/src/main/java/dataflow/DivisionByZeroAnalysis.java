@@ -20,7 +20,7 @@ public class DivisionByZeroAnalysis extends ForwardFlowAnalysis<Unit, ZeroAbstra
   public DivisionByZeroAnalysis(UnitGraph graph) {
     super(graph);
 
-    doAnalysis();
+    doAnalysis();    
   }
 
   protected void flowThrough(ZeroAbstractSet in, Unit unit, ZeroAbstractSet out) {
@@ -40,8 +40,8 @@ public class DivisionByZeroAnalysis extends ForwardFlowAnalysis<Unit, ZeroAbstra
       }
 
       // Set in flowed values
-      out.setValue(variable.getName(), resolvedValue);
-    }
+      out.setValue(variable.getName(), resolvedValue);    
+    }    
   }
 
   protected ZeroAbstractSet newInitialFlow() {
