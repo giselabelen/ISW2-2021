@@ -40,7 +40,7 @@ public enum ZeroAbstractValue {
     }else if (this == ZERO){ // dividendo cero da cero (caso divisor cero se considera arriba)
       return ZERO;
     }else{ // los demas casos dan maybe_cero (combinaciones de MZ y NZ)
-      return BOTTOM;
+      return MAYBE_ZERO;
     }
   }
   
