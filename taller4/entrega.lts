@@ -1,0 +1,62 @@
+// EJERCICIO 1
+
+ENCUENTRO = (hola -> conversar -> adios -> STOP).
+
+TRABAJO = (llego -> trabajo -> parto -> TRABAJO).
+
+MOVIMIENTO = (adelante -> (derecha -> MOVIMIENTO | izquierda -> STOP)).
+
+MONEDA = (tira -> ceca -> MONEDA | tira -> cara -> MONEDA).
+
+CUATROTICKS (N=4)   = CUATROTICKS[0],
+CUATROTICKS[i:0..N] = (when(i<N) tick->CUATROTICKS[i+1]).
+
+const N = 3
+range T = 1..N
+range R = 1..2*N
+DOBLE      = (in[a:T]->TOTAL[2*a]),
+TOTAL[s:R] = (out[s]->DOBLE).
+
+
+// EJERCICIO 2
+
+VARIABLE (M=3) = VARIABLE[0],
+VARIABLE[i:0..M] = (read[i]->VARIABLE[i] | write[a:0..M] ->VARIABLE[a]).
+
+
+// EJERCICIO 3
+
+//primero
+SENSOR (M=10) = SENSOR[-1],
+SENSOR[i:-1..M] = (agua[a:0..M] ->SENSOR[a]
+				| when(i>-1 && i<3) bajo->SENSOR[i]
+				| when(i>2 && i<8) medio -> SENSOR[i]
+				| when(i>7) alto->SENSOR[i]).
+//segundo
+//const M = 10
+
+//SENIAL (M=10) = SENIAL[-1],
+//SENIAL[i:-1..M] = (agua[a:0..M] ->SENIAL[a]).
+
+//NIVEL (M=10) = NIVEL[0],
+//NIVEL[i:0..M] = (when(i<3) bajo->NIVEL[i]
+//				| when(i>2 && i<8) medio -> NIVEL[i]
+//				| when(i>7) alto->NIVEL[i]).
+
+//||SENSOR1 = (SENIAL || NIVEL).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
