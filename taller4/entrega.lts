@@ -27,28 +27,63 @@ VARIABLE[i:0..M] = (read[i]->VARIABLE[i] | write[a:0..M] ->VARIABLE[a]).
 // EJERCICIO 3
 
 //primero
-SENSOR (M=10) = SENSOR[-1],
-SENSOR[i:-1..M] = (agua[a:0..M] ->SENSOR[a]
-				| when(i>-1 && i<3) bajo->SENSOR[i]
-				| when(i>2 && i<8) medio -> SENSOR[i]
-				| when(i>7) alto->SENSOR[i]).
+//SENSOR (M=10) = SENSOR[-1],
+//SENSOR[i:-1..M] = (agua[a:0..M] ->SENSOR[a] 
+//				| when(i>-1) nivel -> (when(i>-1 && i<3) bajo->SENSOR[i]
+//							| when(i>2 && i<8) medio -> SENSOR[i]
+//							| when(i>7) alto->SENSOR[i])).
 //segundo
-//const M = 10
+//SENSOR2 (M=3) = SENSOR2[-1],
+//SENSOR2[i:-1..M] = (agua[a:0..M] ->SENSOR2[a] 
+//				| when(i>-1) nivel -> NIVEL[i] 
+//				| when(i>-1) nivel -> AGUA[i]),//agua[a:0..M] -> NIVEL[a]),
+////const M = 10
 
-//SENIAL (M=10) = SENIAL[-1],
-//SENIAL[i:-1..M] = (agua[a:0..M] ->SENIAL[a]).
+////AGUA (M=2) = AGUA[-1],
+////AGUA[i:0..M] = (agua[a:0..M] -> SENSOR2[a]).
 
-//NIVEL (M=10) = NIVEL[0],
-//NIVEL[i:0..M] = (when(i<3) bajo->NIVEL[i]
-//				| when(i>2 && i<8) medio -> NIVEL[i]
-//				| when(i>7) alto->NIVEL[i]).
+////NIVEL (M=2) = NIVEL[0],
+//NIVEL[i:0..M] = (when(i<3) bajo->SENSOR2[i]
+//				| when(i>2 && i<8) medio -> SENSOR2[i]
+//				| when(i>7) alto->SENSOR2[i]),
 
-//||SENSOR1 = (SENIAL || NIVEL).
-
-
+//||SENSOR1 = (AGUA || NIVEL).
 
 
+//AGUA[i:0..M] = (agua[a:0..M] -> SENSOR2[a]).
 
+// teriminarrrrrr
+
+
+// EJERCICIO 4
+
+AGUA4 (M=10) = AGUA4[5],
+AGUA4[i:0..M] = (when(i<1) agua[a:0..1] -> AGUA4[a]
+				| when(i>0 && i<M) agua[a:i-1..i+1] -> AGUA4[a]
+				| when(i>M-1) agua[a:M-1..M] -> AGUA4[a]).
+
+//|| EJ4 = (AGUA4 || SENSOR).
+
+
+// EJERCICIO 5
+
+//const C = 10
+//NIVEL5 = (nivel -> agua[a:0..C] -> NIVEL5).
+//AGUA5[i:0..C] = (agua[a:0..C] -> NIVEL5).
+
+//|| EJ5 = (NIVEL5 || AGUA4).
+
+//NIVEL5 = (nivel -> AGUAN1
+	//	| nivel -> AGUAN2
+	//	| nivel -> AGUAN3
+	//	| nivel -> AGUAN4),
+
+//AGUAN1 = (agua[1] -> NIVEL5),
+//AGUAN2 = (agua[2] -> NIVEL5),
+//AGUAN3 = (agua[3] -> NIVEL5),
+//AGUAN4 = (agua[4] -> alerta -> NIVEL5).
+
+NIVEL5 = (nivel -> (agua[a:0..7] -> NIVEL5 | agua[a:8..10] -> alerta -> NIVEL5)).
 
 
 
