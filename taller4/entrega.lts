@@ -24,35 +24,30 @@ VARIABLE (M=3) = VARIABLE[0],
 VARIABLE[i:0..M] = (read[i]->VARIABLE[i] | write[a:0..M] ->VARIABLE[a]).
 
 
-// EJERCICIO 3
+// EJERCICIO 3A
 
-//primero
-//SENSOR (M=10) = SENSOR[-1],
-//SENSOR[i:-1..M] = (agua[a:0..M] ->SENSOR[a] 
-//				| when(i>-1) nivel -> (when(i>-1 && i<3) bajo->SENSOR[i]
-//							| when(i>2 && i<8) medio -> SENSOR[i]
-//							| when(i>7) alto->SENSOR[i])).
-//segundo
-//SENSOR2 (M=3) = SENSOR2[-1],
-//SENSOR2[i:-1..M] = (agua[a:0..M] ->SENSOR2[a] 
-//				| when(i>-1) nivel -> NIVEL[i] 
-//				| when(i>-1) nivel -> AGUA[i]),//agua[a:0..M] -> NIVEL[a]),
-////const M = 10
+SENSOR3A (M=10) = SENSOR3A[-1],
+SENSOR3A[i:-1..M] = (agua[a:0..M] -> SENSOR3A[a]
+					| when(i>-1) nivel -> NIVEL3A[i]),
 
-////AGUA (M=2) = AGUA[-1],
-////AGUA[i:0..M] = (agua[a:0..M] -> SENSOR2[a]).
-
-////NIVEL (M=2) = NIVEL[0],
-//NIVEL[i:0..M] = (when(i<3) bajo->SENSOR2[i]
-//				| when(i>2 && i<8) medio -> SENSOR2[i]
-//				| when(i>7) alto->SENSOR2[i]),
-
-//||SENSOR1 = (AGUA || NIVEL).
+NIVEL3A[i:0..M] = (when(i<3) bajo -> SENSOR3A[i]
+				| when(i>2 && i<8) medio -> SENSOR3A[i]
+				| when(i>7) alto -> SENSOR3A[i]).
 
 
-//AGUA[i:0..M] = (agua[a:0..M] -> SENSOR2[a]).
+// EJERCICIO 3B
 
-// teriminarrrrrr
+SENSOR3B (M=3) = SENSOR3B[-1],
+SENSOR3B[i:-1..M] = (agua[a:0..M] -> SENSOR3B[a]
+					| when(i>-1) nivel -> NIVEL3B[i]
+					| when(i>-1) nivel -> AGUA),
+
+NIVEL3B[i:0..M] = (when(i<3) bajo -> SENSOR3B[i]
+				| when(i>2 && i<8) medio -> SENSOR3B[i]
+				| when(i>7) alto -> SENSOR3B[i]),
+
+AGUA = (agua[a:0..M] -> NIVEL3B[a] 
+		| agua[a:0..M] -> AGUA).
 
 
 // EJERCICIO 4
