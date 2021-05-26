@@ -1,64 +1,28 @@
-// EJERCICIO 7
+range N = 0..5
 
-range N =0..5
+DIRECTOR= (open-> close->empty->DIRECTOR).
 
+ENTRADA = (entry[i:0..5]-> ENTRADA).
+SALIDA = (exit[i:0..5]-> SALIDA).
 
+CONTROL = (open-> CONTROLI[0]),
 
-
-
-//ENTRADA(M =5) = ENTRADA[0],
-//ENTRADA[i:0..M] = ( when(i < 5) entry[i] -> ENTRADA[i+1]
-//				|when(i > 4) entry[i]-> full->STOP
-//				).
-
-
-//SALIDA(M =5) = SALIDA[5],
-//SALIDA[i:0..M] = ( when(i > 0) exit[i] -> SALIDA[i-1]
-//			   |when(i < 1) exit[i]-> empty ->STOP
-//				).
-
-//DIRECTOR = (open->close->empty->DIRECTOR).
-
-
-
-
-
-
-CONTROL = (open->  CONTROLI-> close->CONTROLE->empty->CONTROL),
-
-//CONTROL1 = CONTROL CON 0 PERSONLAS
-//CONTROLI = (entry[0]->CONTROLP[1] | exit[1]->empty-> CONTROL | exit[0]-> underflow->STOP),
-
-
-
-//CONTROLP(M=5) = CONTROLP[1],
-//CONTROLP[i:1..M] = entry[i]-> 
-
-
-
-CONTROLI = (entry[0]->CONTROLP[1] | exit[0]-> underflow->STOP),
-
-
-
-CONTROLP(M=5) = CONTROLP[1],
-CONTROLP[i:1..M] = (when(i< 5) entry[i]-> CONTROLP[i+1]|
-				   when(i>4) entry[5]-> CONTROLF|
-				   when(i>0) exit[i]-> CONTROLP[i-1])
-
-CONTROLF = full-> STOP.
-
-
-CONTROLE(M = 5) = 
+CONTROLI[s:N] =  (entry[s]->
+				  if(s<5) then
+					CONTROLI[s+1]
+				  else
+					STOP
+				| exit[s]->
+				 if(s>0) then
+					CONTROLI[s-1]
+				  else
+					STOP
+				| close->CONTROLE[s]),
+CONTROLE[j:N] = (when (j>0) exit[j]->CONTROLE[j-1]
+				|when (j<1) exit[j]->empty->CONTROL).
 
 
 
 
+||MUSEO = (ENTRADA||SALIDA||DIRECTOR||CONTROL).
 
-
-
-//exit -> CONTROL[i-1] |
-//entry[4]-> full -> STOP |
-//exit[-1] -> empty -> STOP). //ahora agrego yo
-
-//CONTROL (M=3) = CONTROL[1],
-//CONTROL[i:0..M] = ( when(i>0 && i < M)  -> SENSOR3B[a]).
