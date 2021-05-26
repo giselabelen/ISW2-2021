@@ -1,0 +1,19 @@
+
+range Z = 0..7
+
+VARIABLE = VARIABLE[3],
+VARIABLE[i:Z] = (
+read[i] -> VARIABLE[i] |
+write[j:Z] -> VARIABLE[j] |
+write[8]-> overflow -> STOP |
+write[-1] -> underflow -> STOP). //ahora agrego yo
+
+
+
+SUMA1 = (read[i:Z]->write[i+1]->SUMA1) + {write[-1],write[0]}.
+
+RESTA1 = (read[i:Z] -> write[i - 1] -> RESTA1)+ {write[7],write[8]}.
+
+||VARSUM = (a:SUMA1|| b:RESTA1|| {a,b}::VARIABLE).
+
+
