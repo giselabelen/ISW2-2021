@@ -37,7 +37,7 @@ NIVEL3A[i:0..M] = (when(i<3) bajo -> SENSOR3A[i]
 
 // EJERCICIO 3B
 
-SENSOR3B (M=3) = SENSOR3B[-1],
+SENSOR3B (M=10) = SENSOR3B[-1],
 SENSOR3B[i:-1..M] = (agua[a:0..M] -> SENSOR3B[a]
 					| when(i>-1) nivel -> NIVEL3B[i]
 					| when(i>-1) nivel -> AGUA),
@@ -57,30 +57,18 @@ AGUA4[i:0..M] = (when(i<1) agua[a:0..1] -> AGUA4[a]
 				| when(i>0 && i<M) agua[a:i-1..i+1] -> AGUA4[a]
 				| when(i>M-1) agua[a:M-1..M] -> AGUA4[a]).
 
-//|| EJ4 = (AGUA4 || SENSOR).
+// comentamos esto para seguir viendo el resto
+//|| EJ4 = (AGUA4 || SENSOR3A).
 
 
 // EJERCICIO 5
 
-//const C = 10
-//NIVEL5 = (nivel -> agua[a:0..C] -> NIVEL5).
-//AGUA5[i:0..C] = (agua[a:0..C] -> NIVEL5).
+NIVEL5 = (nivel -> AGUA5),
 
-//|| EJ5 = (NIVEL5 || AGUA4).
+AGUA5 = (agua[a:0..7] -> NIVEL5 
+		| agua[a:8..10] -> ALERTA),
 
-//NIVEL5 = (nivel -> AGUAN1
-	//	| nivel -> AGUAN2
-	//	| nivel -> AGUAN3
-	//	| nivel -> AGUAN4),
-
-//AGUAN1 = (agua[1] -> NIVEL5),
-//AGUAN2 = (agua[2] -> NIVEL5),
-//AGUAN3 = (agua[3] -> NIVEL5),
-//AGUAN4 = (agua[4] -> alerta -> NIVEL5).
-
-NIVEL5 = (nivel -> (agua[a:0..7] -> NIVEL5 | agua[a:8..10] -> alerta -> NIVEL5)).
-
-
+ALERTA = (alerta -> NIVEL5).
 
 
 
