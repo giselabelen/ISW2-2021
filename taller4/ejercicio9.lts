@@ -13,20 +13,20 @@
 
 
 //9A
-
-//PHIL(I=0) = (when (I%2==0)
-//sitdown->left.get->right.get
-//->eat->left.put->right.put->arise->PHIL
-//|when (I%2==1)
-//sitdown->right.get->left.get
-//->eat->right.put->left.put->arise->PHIL
-//).
-//FORK = (get -> put -> FORK).
-//||DINERS(N=5)=
-//forall [i:0..N-1]
-//(phil[i]:PHIL(i)
-//||{phil[i].left,phil[((i-1)+N)%N].right}::FORK).
-
+/*
+PHIL(I=0) = (when (I%2==0)
+sitdown->left.get->right.get
+->eat->left.put->right.put->arise->PHIL
+|when (I%2==1)
+sitdown->right.get->left.get
+->eat->right.put->left.put->arise->PHIL
+).
+FORK = (get -> put -> FORK).
+||DINERS(N=5)=
+forall [i:0..N-1]
+(phil[i]:PHIL(i)
+||{phil[i].left,phil[((i-1)+N)%N].right}::FORK).
+*/
 
 
 
@@ -40,11 +40,6 @@ PHIL = (sitdown->right.get->left.get
 
 FORK = (get -> put -> FORK).
 
-//LA VERSION COMENTADA FUNCIONA CON N =3
-//CONTROL = (phil[i:0..2].sitdown -> CONTROLA),
-//CONTROLA = (phil[i:0..2].arise->CONTROL | phil[i:0..2].sitdown -> CONTROLB),
-//CONTROLB = (phil[i:0..2].arise->CONTROLA).
-
 const R = 5
 
 CONTROL(M = R-1) = CONTROL[0],
@@ -57,4 +52,6 @@ CONTROL[i:0..M] = (when (i<1) phil[a:0..M].sitdown -> CONTROL[1]
 forall [i:0..N-1]
 (phil[i]:PHIL
 ||{phil[i].left,phil[((i-1)+N)%N].right}::FORK || CONTROL).
+
+
 
