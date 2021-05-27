@@ -16,7 +16,7 @@ AGUA4[i:0..M] = (when(i<1) agua[a:0..1] -> AGUA4[a]
 				| when(i>0 && i<M) agua[a:i-1..i+1] -> AGUA4[a]
 				| when(i>M-1) agua[a:M-1..M] -> AGUA4[a]).
 
-//|| EJ4 = (AGUA4 || SENSOR).
+|| EJ4 = (AGUA4 || SENSOR3A).
 
 
 
