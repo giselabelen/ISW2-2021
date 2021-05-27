@@ -1,0 +1,19 @@
+
+
+
+// EJERCICIO 2
+
+VARIABLE (M=3) = VARIABLE[0],
+VARIABLE[i:0..M] = (read[i]->VARIABLE[i] | write[a:0..M] ->VARIABLE[a]).
+
+
+
+
+
+
+
+
+
+
+
+

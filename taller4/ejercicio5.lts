@@ -1,0 +1,31 @@
+
+// EJERCICIO 5
+
+//const C = 10
+//NIVEL5 = (nivel -> agua[a:0..C] -> NIVEL5).
+//AGUA5[i:0..C] = (agua[a:0..C] -> NIVEL5).
+
+//|| EJ5 = (NIVEL5 || AGUA4).
+
+//NIVEL5 = (nivel -> AGUAN1
+	//	| nivel -> AGUAN2
+	//	| nivel -> AGUAN3
+	//	| nivel -> AGUAN4),
+
+//AGUAN1 = (agua[1] -> NIVEL5),
+//AGUAN2 = (agua[2] -> NIVEL5),
+//AGUAN3 = (agua[3] -> NIVEL5),
+//AGUAN4 = (agua[4] -> alerta -> NIVEL5).
+
+NIVEL5 = (nivel -> (agua[a:0..7] -> NIVEL5 | agua[a:8..10] -> alerta -> NIVEL5)).
+
+
+
+
+
+
+
+
+
+
+

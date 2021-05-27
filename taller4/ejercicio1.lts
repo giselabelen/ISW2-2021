@@ -1,0 +1,31 @@
+// EJERCICIO 1
+
+ENCUENTRO = (hola -> conversar -> adios -> STOP).
+
+TRABAJO = (llego -> trabajo -> parto -> TRABAJO).
+
+MOVIMIENTO = (adelante -> (derecha -> MOVIMIENTO | izquierda -> STOP)).
+
+MONEDA = (tira -> ceca -> MONEDA | tira -> cara -> MONEDA).
+
+CUATROTICKS (N=4)   = CUATROTICKS[0],
+CUATROTICKS[i:0..N] = (when(i<N) tick->CUATROTICKS[i+1]).
+
+const N = 3
+range T = 1..N
+range R = 1..2*N
+DOBLE      = (in[a:T]->TOTAL[2*a]),
+TOTAL[s:R] = (out[s]->DOBLE).
+
+
+
+
+
+
+
+
+
+
+
+
+

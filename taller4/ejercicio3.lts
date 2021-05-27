@@ -1,0 +1,39 @@
+
+
+// EJERCICIO 3A
+
+SENSOR3A (M=10) = SENSOR3A[-1],
+SENSOR3A[i:-1..M] = (agua[a:0..M] -> SENSOR3A[a]
+					| when(i>-1) nivel -> NIVEL3A[i]),
+
+NIVEL3A[i:0..M] = (when(i<3) bajo -> SENSOR3A[i]
+				| when(i>2 && i<8) medio -> SENSOR3A[i]
+				| when(i>7) alto -> SENSOR3A[i]).
+
+
+// EJERCICIO 3B
+
+SENSOR3B (M=10) = SENSOR3B[-1],
+SENSOR3B[i:-1..M] = (agua[a:0..M] -> SENSOR3B[a]
+					| when(i>-1) nivel -> NIVEL3B[i]
+					| when(i>-1) nivel -> AGUA),
+
+NIVEL3B[i:0..M] = (when(i<3) bajo -> SENSOR3B[i]
+				| when(i>2 && i<8) medio -> SENSOR3B[i]
+				| when(i>7) alto -> SENSOR3B[i]),
+
+AGUA = (agua[a:0..M] -> NIVEL3B[a] 
+		| agua[a:0..M] -> AGUA).
+
+
+
+
+
+
+
+
+
+
+
+
+
