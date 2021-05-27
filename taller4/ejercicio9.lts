@@ -1,3 +1,6 @@
+// EJERCICIO 9
+
+// original con deadlock
 
 //PHIL = (sitdown->right.get->left.get
 //->eat->left.put->right.put
@@ -12,7 +15,7 @@
 
 
 
-//9A
+// solucion con asimetria
 /*
 PHIL(I=0) = (when (I%2==0)
 sitdown->left.get->right.get
@@ -30,10 +33,8 @@ forall [i:0..N-1]
 
 
 
-
-//9B
-
-
+// solucion con control
+/*
 PHIL = (sitdown->right.get->left.get
 ->eat->left.put->right.put
 ->arise->PHIL).
@@ -52,6 +53,4 @@ CONTROL[i:0..M] = (when (i<1) phil[a:0..M].sitdown -> CONTROL[1]
 forall [i:0..N-1]
 (phil[i]:PHIL
 ||{phil[i].left,phil[((i-1)+N)%N].right}::FORK || CONTROL).
-
-
-
+*/
