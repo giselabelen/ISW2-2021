@@ -70,11 +70,239 @@ AGUA5 = (agua[a:0..7] -> NIVEL5
 
 ALERTA = (alerta -> NIVEL5).
 
+//EJERCICIO 6
+range Z = 0..1
+
+VARIABLE6 = VARIABLE6[1],
+VARIABLE6[i:Z] = (
+read[i] -> VARIABLE6[i] |
+write[j:Z] -> VARIABLE6[j] |
+write[2]-> overflow -> STOP |
+write[-1] -> underflow -> STOP). //ahora agrego yo
+
+
+
+SUMA1 = (read[i:Z]->write[i+1]->SUMA1) + {write[-1],write[0]}.
+
+RESTA1 = (read[i:Z] -> write[i - 1] -> RESTA1)+ {write[1],write[2]}.
+//comentamos esto para seguir viendo el resto
+//||VARSUM = (a:SUMA1|| b:RESTA1|| {a,b}::VARIABLE6).
+
+//EJERCICIO 7
+range W = 0..5
+
+DIRECTOR= (open-> close->empty->DIRECTOR).
+
+ENTRADA = (entry[i:0..5]-> ENTRADA).
+SALIDA = (exit[i:0..5]-> SALIDA).
+
+CONTROL = (open-> CONTROLI[0]),
+
+CONTROLI[s:W] =  (entry[s]->
+				  if(s<5) then
+					CONTROLI[s+1]
+				  else
+					STOP
+				| exit[s]->
+				 if(s>0) then
+					CONTROLI[s-1]
+				  else
+					STOP
+				| close->CONTROLE[s]),
+CONTROLE[j:W] = (when (j>0) exit[j]->CONTROLE[j-1]
+				|when (j<1) exit[j]->empty->CONTROL).
+
+
+
+//comentamos esto para seguir viendo el resto
+//||MUSEO = (ENTRADA||SALIDA||DIRECTOR||CONTROL).
+
+
+
+//EJERCICIO 8
+
+P = (a -> b -> P).
+Q = (c -> b -> Q).
+//||S = (P || Q).
+
+//Para que compilen bien se descomenta el que se usa (el 8a requiere comentar la linea de ||S, para b y c debe estar descomentada)
+//8a
+
+//T = (c->a->b->T| a->c->b->T).
+
+//U = (c-> V|a->W),
+//V = (a->R),
+//W= (c->R),
+//R = (b->U).
+
+//8b
+
+//R =( a->c->R).
+
+//||E = (S||R).
+
+//8c
+
+//T= (c->d->T|c->T).
+
+//||E = (S||T).
 
 
 
 
 
+//EJERCICIO9  
+
+//Esto es el codigo dado por la catedra
+
+//PHIL = (sitdown->right.get->left.get
+//->eat->left.put->right.put
+//->arise->PHIL).
+
+//FORK = (get -> put -> FORK).
+
+//||DINERS(N=5)=
+//forall [i:0..N-1]
+//(phil[i]:PHIL
+//||{phil[i].left,phil[((i-1)+N)%N].right}::FORK).
 
 
+
+//9A
+
+//Se debe comentar 9B y codigo de catedra para correr 9A
+
+PHIL(I=0) = (when (I%2==0)
+sitdown->left.get->right.get
+->eat->left.put->right.put->arise->PHIL
+|when (I%2==1)
+sitdown->right.get->left.get
+->eat->right.put->left.put->arise->PHIL
+).
+FORK = (get -> put -> FORK).
+
+//||DINERS(N=3)=
+//forall [i:0..N-1]
+//(phil[i]:PHIL(i)
+//||{phil[i].left,phil[((i-1)+N)%N].right}::FORK).
+
+
+
+
+
+//9B
+
+//Se debe comentar 9A y codigo de catedra para correr 9B
+//PHIL = (sitdown->right.get->left.get
+//->eat->left.put->right.put
+//->arise->PHIL).
+
+//FORK = (get -> put -> FORK).
+
+//const R = 3
+
+//CONTROL9(M = R-1) = CONTROL9[0],
+//CONTROL9[i:0..M] = (when (i<1) phil[a:0..M].sitdown -> CONTROL9[1]
+//				  |when(i>0) phil[a:0..M].arise->CONTROL9[i-1]
+//				  |when(i>0 && i<M) phil[a:0..M].sitdown->CONTROL9[i+1]).
+
+
+//||DINERS(N=3)=
+//forall [i:0..N-1]
+//(phil[i]:PHIL
+//||{phil[i].left,phil[((i-1)+N)%N].right}::FORK || CONTROL9).
+
+
+//EJERCICIO10
+
+//Esto comentado es el codigo dado por la catedra
+
+//const MAX=15
+//range NUM=2..MAX
+//set S={[NUM],eos}
+
+// Pipe process buffers elements from set S:
+//PIPE=(put[x:S]->get[x]->PIPE).
+
+// GEN process outputs numbers from 2 to MAX followed by the signal eos:
+//GEN=GEN[2],
+//GEN[x:NUM]=(out.put[x]->
+//if x<MAX then
+//GEN[x+1]
+//else
+//(out.put.eos->end->GEN)
+//).
+
+/* initialize from the first input from prev stage */
+//FILTER=(in.get[p:NUM] -> prime[p] -> FILTER[p]
+//| in.get.eos -> ENDFILTER),
+
+/*filter all inputs that are multiples of p*/
+//FILTER[p:NUM]=(in.get[x:NUM]->
+//if x%p!=0 then
+//(out.put[x]->FILTER[p])
+//else
+//FILTER[p]
+//| in.get.eos->ENDFILTER
+//),
+
+/* terminate filter on eos */
+//ENDFILTER=(out.put.eos -> end -> FILTER).
+
+//||PRIMES(N=4)=
+//(gen:GEN
+//|| pipe[0..N-1]:PIPE
+//|| filter[0..N-1]:FILTER)
+///{pipe[0]/gen.out,
+//pipe[i:0..N-1]/filter[i].in,
+//pipe[i:1..N-1]/filter[i-1].out,
+//end/{filter[0..N-1].end,gen.end}}.
+
+
+const MAX=15
+range NUM=2..MAX
+set S={[NUM],eos}
+
+// Pipe process buffers elements from set S:
+
+PIPE=(put[x:S]->put[r:S]->get[x]->get[r]->PIPE).
+
+// GEN process outputs numbers from 2 to MAX followed by the signal eos:
+
+GEN=GEN[2],
+GEN[x:NUM]=(out.put[x]->
+if x<MAX then
+GEN[x+1]
+else
+(out.put.eos->end->GEN)
+).
+
+/* initialize from the first input from prev stage */
+
+FILTER=(in.get[p:NUM] -> prime[p] -> FILTER[p]
+| in.get.eos -> ENDFILTER),
+
+
+/*filter all inputs that are multiples of p*/
+
+FILTER[p:NUM]=(in.get[x:NUM]->
+if x%p!=0 then
+(out.put[x]->FILTER[p])
+else
+FILTER[p]
+| in.get.eos->ENDFILTER
+),
+
+
+/* terminate filter on eos */
+ENDFILTER=(out.put.eos -> end -> FILTER).
+
+||PRIMES(N=4)=
+(gen:GEN
+|| pipe[0..N-1]:PIPE
+|| filter[0..N-1]:FILTER)
+/{pipe[0]/gen.out,
+pipe[i:0..N-1]/filter[i].in,
+pipe[i:1..N-1]/filter[i-1].out,
+end/{filter[0..N-1].end,gen.end}}.
 
