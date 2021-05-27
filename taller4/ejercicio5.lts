@@ -1,6 +1,6 @@
 // EJERCICIO 5
 
-NIVEL5 = (nivel -> AGUA5),
+NIVEL5 = (sense -> AGUA5),
 
 AGUA5 = (agua[a:0..7] -> NIVEL5 
 		| agua[a:8..10] -> ALERTA),
