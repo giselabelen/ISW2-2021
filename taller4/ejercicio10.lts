@@ -40,25 +40,29 @@
 //end/{filter[0..N-1].end,gen.end}}.
 
 
-const MAX=15
+const MAX=16
 range NUM=2..MAX
 set S={[NUM],eos}
 
 // Pipe process buffers elements from set S:
-PIPE=(put[x:S]->put[r:S]->get[x]->get[r]->PIPE).
+PIPE=(putc[x:S]->putd[x+1]->geta[x]->getb[x+1]->PIPE).
+
 
 // GEN process outputs numbers from 2 to MAX followed by the signal eos:
 GEN=GEN[2],
-GEN[x:NUM]=(out.put[x]->
-if x<MAX then
-GEN[x+1]
+GEN[x:NUM]=(out.putc[x]-> out.putd[x+1]->
+if x+1<MAX then
+GEN[x+2]
 else
 (out.put.eos->end->GEN)
 ).
 
+
 /* initialize from the first input from prev stage */
 FILTER=(in.get[p:NUM] -> prime[p] -> FILTER[p]
 | in.get.eos -> ENDFILTER),
+
+
 
 /*filter all inputs that are multiples of p*/
 FILTER[p:NUM]=(in.get[x:NUM]->
@@ -69,14 +73,19 @@ FILTER[p]
 | in.get.eos->ENDFILTER
 ),
 
+
+
 /* terminate filter on eos */
+
 ENDFILTER=(out.put.eos -> end -> FILTER).
 
 ||PRIMES(N=4)=
 (gen:GEN
 || pipe[0..N-1]:PIPE
-|| filter[0..N-1]:FILTER)
+|| filter[0..2*(N-1)]:FILTER)
 /{pipe[0]/gen.out,
-pipe[i:0..N-1]/filter[i].in,
-pipe[i:1..N-1]/filter[i-1].out,
+geta/{pipe[i:0..N-1].geta,filter[2*i].in.get},
+getb/{pipe[i:0..N-1].getb,filter[2*i+1].in.get},
+putc/{pipe[i:1..N-1].putc,filter[2*i-1].out.put},
+putd/{pipe[i:1..N-1].putd,filter[2*i-2].out.put},
 end/{filter[0..N-1].end,gen.end}}.
