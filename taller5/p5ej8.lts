@@ -1,0 +1,2 @@
+property CAJA_DE_CAMBIOS = (pisoEmbrague ->(nuevoPalanca ->sueltoEmbrague ->CAJA_DE_CAMBIOS|sueltoEmbrague->CAJA_DE_CAMBIOS)).
+						 
