@@ -23,11 +23,16 @@ NIVEL3B[i:0..M] = (when(i<3) bajo -> SENSOR3B[i]
 AGUA = (agua[a:0..M] -> NIVEL3B[a] 
 		| agua[a:0..M] -> AGUA).
 
+// REENTREGA
 
+NUEVOSENSOR3B (M=10) = NUEVOSENSOR3B[-1],
+NUEVOSENSOR3B[i:-1..M] = (agua[a:0..M] -> NUEVOSENSOR3B[a]
+						| when(i>-1) nivel -> NUEVONIVEL3B[i]),
 
-
-
-
+NUEVONIVEL3B[i:0..M] = (agua[a:0..M] -> NUEVONIVEL3B[a]
+					| when(i<3) bajo -> NUEVOSENSOR3B[i]
+					| when(i>2 && i<8) medio -> NUEVOSENSOR3B[i]
+					| when(i>7) alto -> NUEVOSENSOR3B[i]).
 
 
 
