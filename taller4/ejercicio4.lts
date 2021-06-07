@@ -15,10 +15,15 @@ AGUA4[i:0..M] = (when(i<1) agua[a:0..1] -> AGUA4[a]
 				| when(i>0 && i<M) agua[a:i-1..i+1] -> AGUA4[a]
 				| when(i>M-1) agua[a:M-1..M] -> AGUA4[a]).
 
-|| EJ4 = (AGUA4 || SENSOR3A).
+// || EJ4 = (AGUA4 || SENSOR3A).
 
+// REENTREGA
 
+NUEVAAGUA4 (M=10) = NUEVAAGUA4[5],
+NUEVAAGUA4[i:0..M] = (when(i<M) agua[a:i..i+1] -> NUEVAAGUA4[a]
+					| when(i>0) agua[a:i-1..i] -> NUEVAAGUA4[a]).
 
+|| NUEVOEJ4 = (NUEVAAGUA4 || SENSOR3A).
 
 
 
