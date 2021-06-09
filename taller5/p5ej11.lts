@@ -1,0 +1,85 @@
+//leader election in a synchronous ring
+
+set UID = {[19],[14],[7],[2]}
+
+const N = #UID
+
+set M = {null,msg.UID}
+
+set Status = {unknown, leader}
+
+//links or channels hold at most a single message
+CHAN = (put[m:M] -> get[m] -> CHAN).
+
+//the synchronous model proceeds in two steps
+ROUND = (step1 -> step2 -> ROUND).
+//the processes
+
+PROCESS(U=1)
+= (init[U]->STATE['unknown]['msg[U]]),
+
+STATE[status:Status][send:M]
+= (step1 -> put[send] -> STATE[status][send]
+|step2 ->
+
+	(get.null -> DSTATE[status]['null]
+	|get.msg[v:UID] ->
+	if (v>U) then
+		DSTATE[status]['msg[v]]
+	else if (v==U) then
+		DSTATE['leader]['null]
+	else
+	DSTATE[status]['null]
+	)
+),
+
+DSTATE[status:Status][send:M]
+= ([send]->[status]->STATE[status][send]).
+
+
+
+||LCR = ( ROUND
+|| chan[1..N]:CHAN
+|| proc[i:1..N]:PROCESS(@(UID,i-1))
+)/{
+	forall[i:1..N] {
+	proc[i].get/chan[i].get,
+	proc[i].put/chan[i%N+1].put,
+	step1/proc[i].step1,
+	step2/proc[i].step2
+	}
+}.
+
+
+//Verificar, con un observador y la palabra reservada “property”que una vez declarado un lı́der,
+//ningún otro nodo se declara como lı́der. Verificar que el modelo LCR efectivamente cumple la propiedad
+//deseada.
+
+//property ONLY_ONE_LEADER = ({proc[i:1..N].leader, proc[i+1%N].unknown, proc[i+2%N].unknown, proc[i+3%N].unknown}->ONLY_ONE_LEADER2),
+//ONLY_ONE_LEADER2 =({proc[i:1..N].leader, proc[i+1%N].unknown, proc[i+2%N].unknown, proc[i+3%N].unknown}->ONLY_ONE_LEADER3),
+//ONLY_ONE_LEADER3 =({proc[i:1..N].leader, proc[i+1%N].unknown, proc[i+2%N].unknown, proc[i+3%N].unknown}->ONLY_ONE_LEADER4),
+//ONLY_ONE_LEADER4 =({proc[i:1..N].leader, proc[i+1%N].unknown, proc[i+2%N].unknown, proc[i+3%N].unknown}->ONLY_ONE_LEADER)+{proc[i:2..N].leader}.
+
+
+
+
+
+
+
+
+property ONLY_ONE_LEADER = (proc[i:1..N].unknown->ONLY_ONE_LEADER|proc[i:1..N].leader->THERE_LIDER[i]),
+THERE_LIDER[a:1..N]= (when (a == 1){proc[a].leader, proc[2].unknown, proc[3].unknown, proc[4].unknown}->THERE_LIDER[a]
+					|when (a == 2){proc[a].leader, proc[3].unknown, proc[4].unknown, proc[1].unknown}->THERE_LIDER[a] 
+					|when (a == 3){proc[a].leader, proc[4].unknown, proc[1].unknown, proc[2].unknown}->THERE_LIDER[a]
+					|when (a == 4){proc[a].leader, proc[1].unknown, proc[2].unknown, proc[3].unknown}->THERE_LIDER[a])+{proc[i:1..N].leader}.
+
+
+
+
+
+
+
+
+||VERIFY_ONLY_ONE_LEADER = (LCR||ONLY_ONE_LEADER).
+
+
