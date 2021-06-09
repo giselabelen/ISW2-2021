@@ -1,0 +1,57 @@
+// EJERCICIO 7
+
+const N = 5
+range R = 1..5
+
+DIRECTOR= (open-> close->empty->DIRECTOR).
+
+ENTRADA = (entry[i:R]-> ENTRADA).
+SALIDA = (exit[i:0..N-1]-> SALIDA).
+
+CONTROL = (open-> CONTROLI[0]),
+
+CONTROLI[s:0..N] = (when(s<N) entry[s+1] -> CONTROLI[s+1] |
+					when(s>0) exit[s-1] -> CONTROLI[s-1] |
+					close -> CONTROLE[s]),
+
+CONTROLE[j:0..N] = (when(j>0) exit[j-1] -> CONTROLE[j-1] |
+					when(j<1) empty -> CONTROL).
+
+||MUSEO = (ENTRADA||SALIDA||DIRECTOR||CONTROL).
+
+
+//Escriba un observador que lleve a un estado de error sólo si es posible entrar cuando el museo
+//está cerrado. Utilice la palabra clave property y use el alfabeto más chico posible.
+
+//property OBS =  OBS[5],
+//OBS[j:0..N] =  (when(j>0) exit[j-1] -> OBS[j-1]|when(j<1) empty -> OBS[0]).
+
+property NO_CLOSED_ENTRIES = (open->MAY_BE_NOT_CLOSED),
+		 MAY_BE_NOT_CLOSED  = (entry[i:R]->MAY_BE_NOT_CLOSED|close->NO_CLOSED_ENTRIES).
+
+
+||VERIFY_NO_CLOSED_ENTRIES = (MUSEO||NO_CLOSED_ENTRIES).
+
+
+//Escriba un observador que lleve a un estado de error si es posible salir del museo cuando está
+//cerrado. Nuevamente utilice la palabra clave property y el alfabeto más chico posible.
+
+property NO_CLOSED_EXITS = (open->MAY_BE_NOT_CLOSED2),
+		 MAY_BE_NOT_CLOSED2  = (exit[i:0..4]->MAY_BE_NOT_CLOSED2|close->NO_CLOSED_EXITS).
+
+
+||VERIFY_NO_CLOSED_EXITS = (MUSEO||NO_CLOSED_EXITS).
+
+
+
+//Usando la función de menú “Check”, “Safety” compruebe que el Museo satisface la propiedad
+//“No se puede entrar cuando el museo está cerrado” pero viola la propiedad “No se puede salir
+//cuando el museo está cerrado.” Informe el modelo de Museo que utilizó y el contraejemplo
+//reportado por la herramienta.
+
+//Contraejemplo reportado por la herramienta
+//Trace to property violation in NO_CLOSED_EXITS:
+//	open
+//	entry.1
+//	close
+//	exit.0
