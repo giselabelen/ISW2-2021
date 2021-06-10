@@ -1,0 +1,63 @@
+// EJERCICIO 7
+
+const N = 5
+range R = 1..5
+
+DIRECTOR= (open-> close->empty->DIRECTOR).
+
+ENTRADA = (entry[i:R]-> ENTRADA).
+SALIDA = (exit[i:0..N-1]-> SALIDA).
+
+CONTROL = (open-> CONTROLI[0]),
+
+CONTROLI[s:0..N] = (when(s<N) entry[s+1] -> CONTROLI[s+1] |
+					when(s>0) exit[s-1] -> CONTROLI[s-1] |
+					close -> CONTROLE[s]),
+
+CONTROLE[j:0..N] = (when(j>0) exit[j-1] -> CONTROLE[j-1] |
+					when(j<1) empty -> CONTROL).
+
+||MUSEO = (ENTRADA||SALIDA||DIRECTOR||CONTROL).
+
+//Veremos las propiedades descriptas en el ejercicio 10 con LTL.Estas son:
+
+//No se debe poder entrar cuando el museo esta cerrado 
+
+assert NO_CLOSED_ENTRIES = ([](close-> ((!entry[i:R]) U open) ))
+
+//No se debe poder salir del museo cuando esta cerrado
+
+assert NO_CLOSED_EXITS =  ([](close-> ((!exit[i:0..N-1]) U open) ))
+
+//Veremos que cumple la primera propiedad y daremos la traza de error de la segunda.
+
+//Traza de error de la segunda propiedad:
+/*
+Trace to terminal set of states:
+	open
+	entry.1
+	close
+	exit.0
+	empty
+	open
+	entry.1
+	entry.2
+	entry.3
+	entry.4
+	entry.5
+	close
+Cycle in terminal set:
+	exit.4
+	exit.3
+	exit.2
+	exit.1
+	exit.0
+	empty
+	open
+	entry.1
+	entry.2
+	entry.3
+	entry.4
+	entry.5
+	close
+*/
