@@ -1,1 +1,1 @@
-property UnoYDos = (uno->STOP|dos->ERROR).
+property UnoYDos = (uno->STOP) + {dos}.
