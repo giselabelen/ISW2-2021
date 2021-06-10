@@ -1,0 +1,15 @@
+//ejercicio 20
+
+EJEMPLO_0 = (a-> EJEMPLO_1|a->EJEMPLO_2),
+EJEMPLO_1 = (b->EJEMPLO_2),
+EJEMPLO_2 = (a->EJEMPLO_3|b->EJEMPLO_1|c->EJEMPLO_4),
+EJEMPLO_3 = (c-> EJEMPLO_2),
+EJEMPLO_4 = (c->EJEMPLO_2).
+
+
+assert A = [](a || b || c)
+assert B = <>[]c
+assert C = []a
+assert D = (a U (b||c))
+assert E = ([]a || []b || []c) 
+assert F =
