@@ -1,0 +1,33 @@
+const Min = 0
+const MaxBajo = 3
+const MaxMedio = 7 
+const Max = 10
+
+SENSOR = INDEF,
+
+INDEF = (agua[nivel:Min..Max] -> SENSANDO[nivel]),
+
+SENSANDO[nivel:Min..Max] = (
+	agua[n:Min..Max] -> SENSANDO[n] |
+	nivel -> QUERYPEND[nivel]),
+
+
+QUERYPEND[nivel:Min..Max] = (
+	agua[n:Min..Max] -> QUERYPEND[n] |
+	when (nivel <= MaxBajo) bajo -> SENSANDO[nivel] |
+	when (nivel >= MaxMedio) alto -> SENSANDO[nivel] |
+	when (nivel > MaxBajo && nivel < MaxMedio) medio -> SENSANDO[nivel]
+).
+
+assert RESPONSE = [](nivel-> <> (bajo || medio || alto))  
+/*
+Trace to terminal set of states:
+	agua.10
+	nivel
+Cycle in terminal set:
+	agua.10
+*/
+assert FAIR = !(<>[]agua[n:Min..Max])
+
+
+assert RESPONSE_IF_FAIR = (FAIR -> RESPONSE)
