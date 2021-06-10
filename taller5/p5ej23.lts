@@ -20,6 +20,9 @@ QUERYPEND[nivel:Min..Max] = (
 ).
 
 assert RESPONSE = [](nivel-> <> (bajo || medio || alto))  
+
+//La razón de que SENSOR no cumpla la propiedad RESPONSE,es que puede ser que luego de nivel te llegue un ciclo infinito de pedidos de agua,
+// y que nunca se llegue a responder el pedido de nivel. La herramienta nos provee una traza donde ocurre esto mismo:
 /*
 Trace to terminal set of states:
 	agua.10
@@ -27,6 +30,8 @@ Trace to terminal set of states:
 Cycle in terminal set:
 	agua.10
 */
+//Como se puede ver, se pide nivel y luego infinitamente agua10, y jamás se responde la consulta de nivel de agua.
+
 assert FAIR = !(<>[]agua[n:Min..Max])
 
 
