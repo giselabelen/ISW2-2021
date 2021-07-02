@@ -63,17 +63,24 @@ DSTATE[status:Status][send:M]
 
 
 
+//CODIGO VIEJO
 
 
 
+//property ONLY_ONE_LEADER = (proc[i:1..N].unknown->ONLY_ONE_LEADER|proc[i:1..N].leader->THERE_LIDER[i]),
+//THERE_LIDER[a:1..N]= (when (a == 1){proc[a].leader, proc[2].unknown, proc[3].unknown, proc[4].unknown}->THERE_LIDER[a]
+//					|when (a == 2){proc[a].leader, proc[3].unknown, proc[4].unknown, proc[1].unknown}->THERE_LIDER[a] 
+//					|when (a == 3){proc[a].leader, proc[4].unknown, proc[1].unknown, proc[2].unknown}->THERE_LIDER[a]
+//					|when (a == 4){proc[a].leader, proc[1].unknown, proc[2].unknown, proc[3].unknown}->THERE_LIDER[a])+{proc[i:1..N].leader}.
 
-property ONLY_ONE_LEADER = (proc[i:1..N].unknown->ONLY_ONE_LEADER|proc[i:1..N].leader->THERE_LIDER[i]),
-THERE_LIDER[a:1..N]= (when (a == 1){proc[a].leader, proc[2].unknown, proc[3].unknown, proc[4].unknown}->THERE_LIDER[a]
-					|when (a == 2){proc[a].leader, proc[3].unknown, proc[4].unknown, proc[1].unknown}->THERE_LIDER[a] 
-					|when (a == 3){proc[a].leader, proc[4].unknown, proc[1].unknown, proc[2].unknown}->THERE_LIDER[a]
-					|when (a == 4){proc[a].leader, proc[1].unknown, proc[2].unknown, proc[3].unknown}->THERE_LIDER[a])+{proc[i:1..N].leader}.
 
 
+//REENTREGA
+property ONLY_ONE_LEADER = (proc[i:1..N].leader->THERE_LIDER[i]),
+THERE_LIDER[a:1..N]= (when (a == 1){proc[a].leader}->THERE_LIDER[a]
+					|when (a == 2){proc[a].leader}->THERE_LIDER[a] 
+					|when (a == 3){proc[a].leader}->THERE_LIDER[a]
+					|when (a == 4){proc[a].leader}->THERE_LIDER[a])+{proc[i:1..N].leader}.
 
 
 
